@@ -7,18 +7,35 @@ function QueryPage() {
     return (
         <Container 
             id="QueryPage-container"
-            style={{ height: "100%" }}    
+            fluid
+            className="h-100 d-flex flex-column"
         >
-            <Row ys={10} className="justify-content-center">
-                <Col xs={8} className="justify-content-center">
+            <Row
+                style={{
+                    flex: "1 0 1",
+                    minHeight: "50%",
+                    maxHeight: "100%"
+                }}
+            >
+                <Col
+                    xs={8}
+                    className="mx-auto h-100"
+                >
                     <AnswerQueryComponent />
 
                 </Col>
 
             </Row>
 
-            <Row ys={2} className="justify-content-center">
-                <Col xs={8} className="justify-content-center">
+            <Row
+                style={{
+                    flex: "1 0 auto"
+                }}
+            >
+                <Col
+                    xs={8}
+                    className="mx-auto"
+                >
                     <InputQueryComponent />
 
                 </Col>

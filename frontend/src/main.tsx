@@ -12,7 +12,12 @@ function App() {
     return (
         <div 
             id="main-container"
-            style= {{ height: "100%"}}
+            style= {{
+                width: "100vw",
+                height: "100vh",
+                margin: 0,
+                padding: 0
+            }}
         >
             <QueryPage />
         </div>

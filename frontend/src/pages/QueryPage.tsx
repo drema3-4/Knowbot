@@ -19,7 +19,7 @@ function QueryPage() {
             >
                 <Col
                     xs={8}
-                    className="mx-auto h-100"
+                    className="h-100 mx-auto"
                 >
                     <AnswerQueryComponent />
 
@@ -34,7 +34,7 @@ function QueryPage() {
             >
                 <Col
                     xs={8}
-                    className="mx-auto"
+                    className="h-100 mx-auto"
                 >
                     <InputQueryComponent />
 

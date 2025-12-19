@@ -1,4 +1,4 @@
-import { Container, Form, Row, Col, Button } from "react-bootstrap";
+import { Container, Form, Row, Button } from "react-bootstrap";
 import { useState } from "react";
 
 function InputQueryComponent() {
@@ -7,30 +7,51 @@ function InputQueryComponent() {
     return (
         <Container
             id="InputQueryComponent-container"
-            style={{
-                backgroundColor: "white",
-                padding: "15px",
-                borderRadius: "8px",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
-            }}
+            className="h-100"
         >
-            <Form>
-                <Row>
-                    <Col xs={10}>
-                        <Form.Control
-                            type="text"
-                            placeholder="Введите запрос"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                        />
-                    </Col>
-                    <Col xs={2}>
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
-                    </Col>
+            <Form
+                className="d-flex flex-column"
+                style={{
+                    backgroundColor: "white",
+                    padding: "15px",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
+                }}
+            >
+                <Row
+                    style={{
+                        flex: "1 1 1"
+                    }}
+                >
+                    <Form.Control
+                        as="textarea"
+                        type="text"
+                        placeholder="Введите запрос"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        style={{
+                            resize: "vertical",
+                            overflowY: "auto",
+                            whiteSpace: "pre-wrap",
+                            wordWrap: "break-word",
+                            lineHeight: "1.5"
+                        }}
+                        
+                    />
+                    
+                </Row>
+                <Row
+                    style={{
+                        flex: "0 0 auto"
+                    }}
+                >
+                    <Button variant="primary" type="submit">
+                        Submit
+                    </Button>
+
                 </Row>
             </Form>
+
         </Container>
     );
 }

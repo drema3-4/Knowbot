@@ -2,7 +2,7 @@ import { Container } from "react-bootstrap";
 
 
 function AnswerQueryComponent() {
-    const longText = "Здесь ваш длинный текст... ".repeat(200);
+    const longText = "Здесь ваш длинный текст... ".repeat(2);
 
     return (
         <Container

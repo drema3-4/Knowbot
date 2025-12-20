@@ -1,4 +1,4 @@
-from database import new_session, UserOrm, SessionOrm, QueryOrm, AnswerOrm
+from backend.database.database import new_session, UserOrm, SessionOrm, QueryOrm, AnswerOrm
 from main import SUserAdd, SUser, SSesionAdd, SQueryAdd, SAnswerAdd
 from sqlalchemy import select
 

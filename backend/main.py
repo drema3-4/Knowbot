@@ -5,6 +5,7 @@ from api.user_routers import user_router
 from api.session_router import session_router
 from api.query_router import query_router
 from api.answer_router import answer_router
+import uvicorn
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -20,3 +21,6 @@ app.include_router(user_router)
 app.include_router(session_router)
 app.include_router(query_router)
 app.include_router(answer_router)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -8,3 +8,7 @@ class SQueryAdd(BaseModel):
 
 class SQuery(SQueryAdd):
     query_id: int
+
+class SQueryId(BaseModel):
+    ok: bool
+    query_id: int

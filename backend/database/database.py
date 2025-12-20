@@ -11,16 +11,19 @@ new_session = async_sessionmaker(engine, expire_on_commit=False)
 class Model(DeclarativeBase):
     pass
 
+
 class UserOrm(Model):
     __tablename__ = "User"
 
     user_id: Mapped[int] = mapped_column(primary_key=True)
+
 
 class SessionOrm(Model):
     __tablename__ = "Session"
 
     session_id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("User.user_id"))
+
 
 class QueryOrm(Model):
     __tablename__ = "Query"
@@ -30,6 +33,7 @@ class QueryOrm(Model):
     num_query_in_session: Mapped[int]
     query: Mapped[str]
 
+
 class AnswerOrm(Model):
     __tablename__ = "Answer"
 
@@ -37,6 +41,7 @@ class AnswerOrm(Model):
     session_id: Mapped[int] = mapped_column(ForeignKey("Session.session_id"))
     num_answer_in_session: Mapped[int]
     answer: Mapped[str]
+
 
 async def create_tables():
     async with engine.begin() as conn:

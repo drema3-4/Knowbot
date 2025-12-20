@@ -8,3 +8,7 @@ class SAnswerAdd(BaseModel):
 
 class SAnswer(SAnswerAdd):
     answer_id: int
+
+class SAnswerId(BaseModel):
+    ok: bool = True
+    answer_id: int

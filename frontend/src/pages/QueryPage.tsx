@@ -18,7 +18,7 @@ function QueryPage() {
                 }}
             >
                 <Col
-                    xs={8}
+                    xs={6}
                     className="h-100 mx-auto"
                 >
                     <AnswerQueryComponent />
@@ -33,7 +33,7 @@ function QueryPage() {
                 }}
             >
                 <Col
-                    xs={8}
+                    xs={6}
                     className="h-100 mx-auto"
                 >
                     <InputQueryComponent />

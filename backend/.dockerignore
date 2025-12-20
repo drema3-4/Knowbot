@@ -1,0 +1,114 @@
+# Игнорируем виртуальные окружения
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Игнорируем кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Игнорируем файлы PyCharm/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Игнорируем файлы операционной системы
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Игнорируем логи и временные файлы
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.pid
+*.seed
+*.pid.lock
+*.sock
+
+# Игнорируем тесты и документацию
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+test/
+tests/
+docs/
+*.md
+
+# Игнорируем файлы Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+docker-compose.override.yml
+
+# Игнорируем системные файлы
+**/.git/
+**/.gitignore
+**/.gitattributes
+**/.github/
+**/.gitlab/
+
+# Игнорируем конфигурационные файлы (кроме тех, что нужны для прода)
+*.env
+*.env.local
+*.env.*.local
+secrets/
+keys/
+certificates/
+
+# Игнорируем файлы развертывания
+.elasticbeanstalk/
+*.elasticbeanstalk/*
+
+# Игнорируем Jupyter notebooks
+.ipynb_checkpoints
+
+# Исключения (оставляем только необходимое)
+# !.env.example  # раскомментировать если нужно копировать пример env файла
+# !requirements*.txt  # раскомментировать если requirements вложены в подпапки
+# !package.json  # для Node.js проектов
+# !package-lock.json
+
+# Сохраняем только исходный код и минимальные конфигурации
+# !README.md  # если нужно включать README
+# !LICENSE  # если нужно включать лицензию
+# !pyproject.toml  # для современных Python проектов
+# !poetry.lock  # если используете Poetry
+# !Pipfile  # если используете Pipenv
+# !Pipfile.lock

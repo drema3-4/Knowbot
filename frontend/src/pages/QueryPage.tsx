@@ -1,49 +1,31 @@
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import InputQueryComponent from '../components/InputQueryComponent';
 import AnswerQueryComponent from '../components/AnswerQueryComponent';
+import mockMessages from './mockMessage.json';
 
 function QueryPage() {
+  const hasMessages = mockMessages.length > 0;
 
-    return (
-        <Container 
-            id="QueryPage-container"
-            fluid
-            className="h-100 d-flex flex-column"
-        >
-            <Row
-                style={{
-                    flex: "1 0 1",
-                    minHeight: "50%",
-                    maxHeight: "100%"
-                }}
-            >
-                <Col
-                    xs={6}
-                    className="h-100 mx-auto"
-                >
-                    <AnswerQueryComponent />
-
-                </Col>
-
-            </Row>
-
-            <Row
-                style={{
-                    flex: "1 0 auto"
-                }}
-            >
-                <Col
-                    xs={6}
-                    className="h-100 mx-auto"
-                >
-                    <InputQueryComponent />
-
-                </Col>
-
-            </Row>
-
-        </Container>
-    );
+  return (
+    <div style={{ height: '100vh', position: 'relative' }}>
+      {hasMessages ? (
+        // Стандартный вид: список сверху, поле снизу
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1, overflow: 'hidden' }}>
+            <AnswerQueryComponent messages={mockMessages} />
+          </div>
+          <div style={{ borderTop: '1px solid #ccc' }}>
+            <InputQueryComponent />
+          </div>
+        </div>
+      ) : (
+        // Пустой чат: поле по центру
+        <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <InputQueryComponent />
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default QueryPage;

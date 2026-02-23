@@ -5,15 +5,16 @@ function InputQueryComponent() {
     const [inputValue, setInputValue] = useState('');
 
     return (
-        <TextareaAutosize
-            minRows={2}
-            maxRows={8}
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Введите сюда свой запрос..."
-        >
-
-        </TextareaAutosize>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '0.75rem 1rem' }}>
+            <TextareaAutosize
+                minRows={2}
+                maxRows={8}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Введите сюда свой запрос..."
+                style={{ width: '100%', maxWidth: '800px', resize: 'none' }}
+            />
+        </div>
     );
 }
 

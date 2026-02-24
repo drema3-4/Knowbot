@@ -1,5 +1,24 @@
+from typing import Dict, Any
 from pathlib import Path
 from pydantic_settings import BaseSettings
+
+class Vector_Store_Settings(BaseSettings):
+    EMBEDDING_MODEL_SETTINGS: Dict[str, Any] = {
+        "model_name": "all-MiniLM-L6-v2",
+        "model_kwargs": { "device": "cpu" },
+        "encode_kwargs": { "normalize_embeddings": True }
+    }
+
+    RETRIEVER_SETTINGS: dict[str, Any] = {
+        "search_type": "mmr",
+        "search_kwargs": {
+            "k": 5,
+            "fetch_k": 20,
+            "lambda_mult": 0.5
+        }
+    }
+
+    PRESIST_DIRECTORY = "../chroma_db"
 
 class Text_Splitter_Settings(BaseSettings):
     CHUNK_SIZE: int = 1000
@@ -47,6 +66,7 @@ class LLM_Settings(BaseSettings):
         env_file = Path(__file__).parent.parent / ".env"
 
 class Settings(BaseSettings):
+    vector_store: Vector_Store_Settings = Vector_Store_Settings()
     text_splitter: Text_Splitter_Settings = Text_Splitter_Settings()
     llm: LLM_Settings = LLM_Settings()
 

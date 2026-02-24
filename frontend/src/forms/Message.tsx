@@ -1,25 +1,19 @@
 import MessageBubble from './MessageBubble';
+import type { MessageProps } from '../types/QueryPageTypes';
 
-interface MessageProps {
-  text: string;
-  sender: 'user' | 'bot';
-  // Дополнительные пропсы, например, timestamp, можно добавить позже
+
+function Message({ text, sender } : MessageProps) {
+    return (
+        <div
+            className={`d-flex ${
+            sender === 'user' ? 'justify-content-end' : 'justify-content-start'
+            } mb-2`}
+        >
+            <div style={{ maxWidth: '70%' }}>
+                <MessageBubble text={text} sender={sender} />
+            </div>
+        </div>
+    );
 }
-
-const Message: React.FC<MessageProps> = ({ text, sender }) => {
-  return (
-    <div
-      className={`d-flex ${
-        sender === 'user' ? 'justify-content-end' : 'justify-content-start'
-      } mb-2`}
-    >
-      {/* Можно добавить аватар слева для бота, если нужно, но пока нет */}
-      <div style={{ maxWidth: '70%' }}>
-        <MessageBubble text={text} sender={sender} />
-      </div>
-      {/* Можно добавить аватар справа для пользователя */}
-    </div>
-  );
-};
 
 export default Message;

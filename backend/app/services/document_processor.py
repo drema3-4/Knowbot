@@ -7,24 +7,24 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from ..core.config import settings
 
 
-class Document_processor:
+class DocumentProcessor:
     def __init__(self):
         self.text_splitter_settings = settings.text_splitter
 
     def normalize_document(self, document: str) -> str:
         # Замена переносов строк внутри предложений на пробелы
         # Шаблон ищет последовательность: буква/цифра -> перенос строки -> буква/цифра
-        document = re.sub(r'(?<=[а-яёa-z0-9])\s*\n\s*(?=[а-яёa-z0-9])', ' ', document, flags=re.IGNORECASE)
+        document = re.sub(r"(?<=[а-яёa-z0-9])\s*\n\s*(?=[а-яёa-z0-9])", " ", document, flags=re.IGNORECASE)
         
         # Замена нескольких пробельных символов на один пробел
-        document = re.sub(r'\s+', ' ', document)
+        document = re.sub(r"\s+", " ", document)
         
         # Удаление пробелов перед знаками препинания
-        document = re.sub(r'\s+([.,!?;:])', r'\1', document)
+        document = re.sub(r"\s+([.,!?;:])", r"\1", document)
         
         # Восстановление переносов строк после завершающих предложение знаков
         # Восстанавливает структуру абзацев
-        document = re.sub(r'([.!?])\s+([А-ЯA-Z])', r'\1\n\n\2', document)
+        document = re.sub(r"([.!?])\s+([А-ЯA-Z])", r"\1\n\n\2", document)
         
         return document.strip()
     
@@ -46,13 +46,13 @@ class Document_processor:
             
             # Сохранение номера страницы в метаданных
             # PyMuPDFLoader сохраняет номер страницы в metadata['page']
-            if 'page' in doc.metadata:
+            if "page" in doc.metadata:
                 # Преобразование номера страницы в целое число
                 # page_index представляет физический номер страницы (начиная с 0)
-                doc.metadata['page_index'] = int(doc.metadata['page'])
+                doc.metadata["page_index"] = int(doc.metadata["page"])
             else:
                 # Резервное значение, если номер страницы не найден
-                doc.metadata['page_index'] = 0
+                doc.metadata["page_index"] = 0
         
         # Вычисление SHA1 хэша исходного PDF файла для идентификации
         with open(path_document, "rb") as f:
@@ -61,8 +61,8 @@ class Document_processor:
         
         # Добавление идентификационной информации в метаданные каждой страницы
         for doc in document:
-            doc.metadata['pdf_sha1'] = document_sha1  # Уникальный идентификатор документа
-            doc.metadata['source_path'] = path_document  # Путь к исходному файлу
+            doc.metadata["pdf_sha1"] = document_sha1  # Уникальный идентификатор документа
+            doc.metadata["source_path"] = path_document  # Путь к исходному файлу
         
         return document, document_sha1
 

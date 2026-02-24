@@ -9,8 +9,7 @@ class RAGEngine:
     ):
         self.retriever = retriever
         self.llm_settings = settings.llm
-        self.__init_chain__()
-        
+        self.__init_chain__()    
 
     def __init_chain__(self):
         llm = ChatGoogleGenerativeAI(**self.llm_settings.to_langchain_params())

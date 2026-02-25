@@ -38,12 +38,20 @@ class DocumentProcessor:
         )
         
         # Загрузка документа: возвращает список Document объектов (по одному на страницу)
-        document = loader.load()
+        try:
+            document = loader.load()
+        except Exception as e:
+            print(f"Ошибка при загрузке PDF: {e}")
+            import traceback
+            traceback.print_exc()
+            return None, None
         
         # Обработка каждой страницы документа
         for doc in document:
             # Нормализация текста страницы
             doc.page_content = self.normalize_document(doc.page_content)
+
+            print(doc.page_content)
             
             # Сохранение номера страницы в метаданных
             # PyMuPDFLoader сохраняет номер страницы в metadata['page']
@@ -54,7 +62,7 @@ class DocumentProcessor:
             else:
                 # Резервное значение, если номер страницы не найден
                 doc.metadata["page_index"] = 0
-        
+
         # Вычисление SHA1 хэша исходного PDF файла для идентификации
         with open(path_document, "rb") as f:
             document_bytes = f.read()

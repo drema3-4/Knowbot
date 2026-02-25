@@ -19,9 +19,9 @@ class RAGEngine:
         self.__init_chain__()    
 
     def __init_chain__(self):
-        llm = ChatGoogleGenerativeAI(**self.llm_settings.to_langchain_params())
+        self.llm = ChatGoogleGenerativeAI(**self.llm_settings.to_langchain_params())
         self.chain = RetrievalQA.from_llm(
-            llm=llm,
+            llm=self.llm,
             retriever=self.retriever,
             prompt=self.prompt
         )

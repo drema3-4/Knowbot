@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+# from fastapi import FastAPI
+from fastapi_offline import FastAPIOffline as FastAPI
 import shutil
 from pathlib import Path
 

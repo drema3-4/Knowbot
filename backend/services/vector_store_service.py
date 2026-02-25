@@ -1,7 +1,8 @@
-from document_processor import DocumentProcessor
 from typing import List
 from langchain_core.documents import Document
 import os
+
+from services.document_processor import DocumentProcessor
 
 class VectorStoreService:
     def __init__(

@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict, Any, Callable, List
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
@@ -9,7 +9,7 @@ class Vector_Store_Settings(BaseSettings):
         "encode_kwargs": { "normalize_embeddings": True }
     }
 
-    RETRIEVER_SETTINGS: dict[str, Any] = {
+    RETRIEVER_SETTINGS: Dict[str, Any] = {
         "search_type": "mmr",
         "search_kwargs": {
             "k": 5,
@@ -18,14 +18,14 @@ class Vector_Store_Settings(BaseSettings):
         }
     }
 
-    PERSIST_DIRECTORY: Path = Path(__file__).parent / "chroma_db"
+    PERSIST_DIRECTORY: Path = Path(__file__).parent.parent / "chroma_db"
 
 class Text_Splitter_Settings(BaseSettings):
     CHUNK_SIZE: int = 1000
     CHUNK_OVERLAP: int = 200
     MIN_CHUNK_SIZE: int = 50
-    LENGTH_FUNCTION = len
-    SEPARATORS = [     # Иерархия разделителей (от крупных к мелким)
+    LENGTH_FUNCTION: Callable = len
+    SEPARATORS: List[str] = [     # Иерархия разделителей (от крупных к мелким)
         "\n\n",        # Двойные переносы строк - границы между абзацами
         "\n",          # Одиночные переносы строк
         ". ",          # Конец предложений с пробелом
@@ -45,16 +45,16 @@ class Text_Splitter_Settings(BaseSettings):
         }
 
 class LLM_Settings(BaseSettings):
-    API_KEY: str
-    MODEL="gemini-2.5-flash"
-    TEMPERATURE=0.1
-    MAX_TOKENS=None
-    TIMEOUT=None
-    MAX_RETRIES=2
+    GOOGLE_API_KEY: str
+    MODEL: str = "gemini-2.5-flash"
+    TEMPERATURE: float = 0.1
+    MAX_TOKENS: Any = None
+    TIMEOUT: Any = None
+    MAX_RETRIES: int = 2
 
     def to_langchain_params(self) -> dict:
         return {
-            "api_key": self.API_KEY,
+            "api_key": self.GOOGLE_API_KEY,
             "model": self.MODEL,
             "temperature": self.TEMPERATURE,
             "max_tokens": self.MAX_TOKENS,
@@ -70,7 +70,7 @@ class Settings(BaseSettings):
     text_splitter: Text_Splitter_Settings = Text_Splitter_Settings()
     llm: LLM_Settings = LLM_Settings()
 
-    DOCUMENTS_DIRECTORY: Path = Path(__file__).parent / "documents"
+    DOCUMENTS_DIRECTORY: Path = Path(__file__).parent.parent / "documents"
 
     class Config:
         env_file = Path(__file__).parent / ".env"

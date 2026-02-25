@@ -69,3 +69,6 @@ htmlcov/
 
 # DataBase
 db.db
+
+/chroma_db
+/documents

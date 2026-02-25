@@ -18,7 +18,7 @@ class Vector_Store_Settings(BaseSettings):
         }
     }
 
-    PRESIST_DIRECTORY = "../chroma_db"
+    PERSIST_DIRECTORY: Path = Path(__file__).parent.parent / "chroma_db"
 
 class Text_Splitter_Settings(BaseSettings):
     CHUNK_SIZE: int = 1000

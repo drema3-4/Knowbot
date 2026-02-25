@@ -15,4 +15,4 @@ PROMPT_TEMPLATE = """
 Вопрос:
 {question}
 """
-PROMPT_TEMPLATE_INPUT_VARIEBLES = ["context", "question"]
+PROMPT_TEMPLATE_INPUT_VARIABLES = ["context", "question"]

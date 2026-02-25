@@ -1,7 +1,7 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from ..core.config import settings
 from langchain_core.prompts import PromptTemplate
-from ..core.prompts import PROMPT_TEMPLATE, PROMPT_TEMPLATE_INPUT_VARIEBLES
+from ..core.prompts import PROMPT_TEMPLATE, PROMPT_TEMPLATE_INPUT_VARIABLES
 from langchain_classic.chains.retrieval_qa.base import RetrievalQA
 
 
@@ -13,7 +13,7 @@ class RAGEngine:
         self.llm_settings = settings.llm
         self.prompt = PromptTemplate(
             template=PROMPT_TEMPLATE,
-            input_variables=PROMPT_TEMPLATE_INPUT_VARIEBLES
+            input_variables=PROMPT_TEMPLATE_INPUT_VARIABLES
         )
         self.__init_chain__()    
 

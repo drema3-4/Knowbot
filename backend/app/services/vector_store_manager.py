@@ -15,7 +15,7 @@ class VectorStoreManager:
     ) -> None:
         self.vectore_store_settings = settings.vector_store
 
-        self.presist_directory = self.vectore_store_settings.PRESIST_DIRECTORY
+        self.presist_directory = self.vectore_store_settings.PERSIST_DIRECTORY
         self.embeddings = HuggingFaceEmbeddings(
             **self.vectore_store_settings.EMBEDDING_MODEL_SETTINGS
         )

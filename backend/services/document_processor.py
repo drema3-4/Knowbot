@@ -4,7 +4,8 @@ from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_core.documents import Document
 import hashlib
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from ..core.config import settings
+
+from core.config import settings
 
 
 class DocumentProcessor:

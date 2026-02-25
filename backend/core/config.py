@@ -18,7 +18,7 @@ class Vector_Store_Settings(BaseSettings):
         }
     }
 
-    PERSIST_DIRECTORY: Path = Path(__file__).parent.parent / "chroma_db"
+    PERSIST_DIRECTORY: Path = Path(__file__).parent / "chroma_db"
 
 class Text_Splitter_Settings(BaseSettings):
     CHUNK_SIZE: int = 1000
@@ -70,7 +70,9 @@ class Settings(BaseSettings):
     text_splitter: Text_Splitter_Settings = Text_Splitter_Settings()
     llm: LLM_Settings = LLM_Settings()
 
+    DOCUMENTS_DIRECTORY: Path = Path(__file__).parent / "documents"
+
     class Config:
-        env_file = Path(__file__).parent.parent / ".env"
+        env_file = Path(__file__).parent / ".env"
 
 settings = Settings()

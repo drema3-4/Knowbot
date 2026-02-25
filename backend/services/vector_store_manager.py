@@ -1,8 +1,9 @@
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
-from ..core.config import settings
 import os
 from langchain_core.documents import Document
+
+from core.config import settings
 
 
 class VectorStoreManager:

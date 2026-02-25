@@ -1,8 +1,9 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
-from ..core.config import settings
 from langchain_core.prompts import PromptTemplate
-from ..core.prompts import PROMPT_TEMPLATE, PROMPT_TEMPLATE_INPUT_VARIABLES
 from langchain_classic.chains.retrieval_qa.base import RetrievalQA
+
+from core.config import settings
+from core.prompts import PROMPT_TEMPLATE, PROMPT_TEMPLATE_INPUT_VARIABLES
 
 
 class RAGEngine:

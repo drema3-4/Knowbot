@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+
 from schemas.query import QueryRequest, QueryResponse
 from api.dependencies import get_rag_engine
 from services.rag_engine import RAGEngine

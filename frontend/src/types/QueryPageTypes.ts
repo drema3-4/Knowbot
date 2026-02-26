@@ -1,5 +1,6 @@
 export interface MessageListProps {
     messages: Array<{ id: string; text: string; sender: 'user' | 'bot' }>;
+    // messages: Array<{ text: string; sender: 'user' | 'bot' }>;
 }
 
 export type Sender = 'user' | 'bot';

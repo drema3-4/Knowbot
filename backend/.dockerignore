@@ -112,3 +112,5 @@ certificates/
 # !poetry.lock  # если используете Poetry
 # !Pipfile  # если используете Pipenv
 # !Pipfile.lock
+
+/chroma_db

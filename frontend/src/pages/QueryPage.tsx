@@ -1,19 +1,21 @@
 // pages/QueryPage.tsx
 import InputQueryComponent from '../components/InputQueryComponent';
 import AnswerQueryComponent from '../components/AnswerQueryComponent';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+// import { useEffect, useState } from 'react';
 import type { Message } from '../types/QueryPageTypes';
-import { fetchHistory, sendMessage } from '../services/QueryPageApi';
+import { sendMessage } from '../services/QueryPageApi';
+// import { fetchHistory, sendMessage } from '../services/QueryPageApi';
 
 function QueryPage() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        fetchHistory()
-            .then(setMessages)
-            .catch(console.error);
-    }, []);
+    // useEffect(() => {
+    //     fetchHistory()
+    //         .then(setMessages)
+    //         .catch(console.error);
+    // }, []);
 
     const handleSend = async (prompt: string) => {
         const userMessage: Message = {

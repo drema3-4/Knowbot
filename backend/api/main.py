@@ -3,6 +3,8 @@ from contextlib import asynccontextmanager
 from fastapi_offline import FastAPIOffline as FastAPI
 import shutil
 from pathlib import Path
+from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 from core.config import settings
 from services.document_processor import DocumentProcessor
@@ -49,3 +51,14 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="RAG MVP", lifespan=lifespan)
 
 app.include_router(query.router, prefix="/api/v1", tags=["Query"])
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],  # для dev
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# if __name__ == "__main__":
+#     uvicorn.run("api.main:app", host="0.0.0.0", port=8000, reload=False)

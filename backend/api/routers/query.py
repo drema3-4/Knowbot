@@ -13,7 +13,11 @@ async def query_endpoint(
     rag_engine: RAGEngine = Depends(get_rag_engine)
 ):
     try:
+        print("____________________________________________")
+        print("Получили запрос и отправряем его в цепочку RAG")
         answer = rag_engine.query(request.question)
+        print("____________________________________________")
+        print("Получили ответ, возвращаем его обратно")
         return QueryResponse(answer=answer)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

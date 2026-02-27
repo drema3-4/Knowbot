@@ -45,8 +45,9 @@ class Text_Splitter_Settings(BaseSettings):
         }
 
 class LLM_Settings(BaseSettings):
-    GOOGLE_API_KEY: str
-    MODEL: str = "gemini-2.5-flash"
+    API_KEY: str
+    MODEL: str = "openai/gpt-4o-mini"
+    BASE_URL: str = "https://api.vsegpt.ru/v1"
     TEMPERATURE: float = 0.1
     MAX_TOKENS: Any = None
     TIMEOUT: Any = None
@@ -54,8 +55,9 @@ class LLM_Settings(BaseSettings):
 
     def to_langchain_params(self) -> dict:
         return {
-            "api_key": self.GOOGLE_API_KEY,
+            "api_key": self.API_KEY,
             "model": self.MODEL,
+            "base_url": self.BASE_URL,
             "temperature": self.TEMPERATURE,
             "max_tokens": self.MAX_TOKENS,
             "timeout": self.TIMEOUT,

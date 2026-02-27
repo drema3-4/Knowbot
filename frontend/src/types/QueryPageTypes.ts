@@ -6,11 +6,13 @@ export interface MessageListProps {
 export type Sender = 'user' | 'bot';
 
 export interface MessageProps {
+    id: string;
     text: string;
     sender: Sender;
 }
 
 export interface MessageBubbleProps {
+    id: string;
     text: string;
     sender: Sender;
     className?: string;

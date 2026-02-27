@@ -17,17 +17,17 @@ function QueryPage() {
     //         .catch(console.error);
     // }, []);
 
-    const handleSend = async (prompt: string) => {
+    const handleSend = async (question: string) => {
         const userMessage: Message = {
             id: Date.now().toString(),
-            text: prompt,
+            text: question,
             sender: 'user'
         };
         setMessages(prev => [...prev, userMessage]);
         setLoading(true);
 
         try {
-            const botMessage = await sendMessage(prompt);
+            const botMessage = await sendMessage(question);
             setMessages(prev => [...prev, botMessage]);
         } catch (error) {
             console.error('Ошибка при отправке: ', error);

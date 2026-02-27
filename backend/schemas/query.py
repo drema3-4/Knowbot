@@ -4,4 +4,6 @@ class QueryRequest(BaseModel):
     question: str
 
 class QueryResponse(BaseModel):
-    answer: str
+    id: str
+    text: str
+    sender: str

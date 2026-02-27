@@ -54,7 +54,12 @@ app.include_router(query.router, prefix="/api/v1", tags=["Query"])
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],  # для dev
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost",        # для продакшена
+        "http://127.0.0.1",        # на всякий случай
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

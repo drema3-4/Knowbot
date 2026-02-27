@@ -2,7 +2,7 @@ import MessageBubble from './MessageBubble';
 import type { MessageProps } from '../types/QueryPageTypes';
 
 
-function Message({ text, sender } : MessageProps) {
+function Message({ id, text, sender } : MessageProps) {
     return (
         <div
             className={`d-flex ${
@@ -10,7 +10,7 @@ function Message({ text, sender } : MessageProps) {
             } mb-2`}
         >
             <div style={{ maxWidth: '70%' }}>
-                <MessageBubble text={text} sender={sender} />
+                <MessageBubble id={id} text={text} sender={sender} />
             </div>
         </div>
     );

@@ -9,15 +9,15 @@ const API_BASE = '/api/v1';
 //     return data.messages; // предполагаем, что сервер возвращает { messages: [...] }
 // }
 
-export async function sendMessage(prompt: string): Promise<Message> {
+export async function sendMessage(question: string): Promise<Message> {
     const res = await fetch(`${API_BASE}/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ question: question }),
     });
     if (!res.ok) throw new Error('Failed to send message');
-    const data = await res.json();
-    return data.message; // сервер возвращает { message: { id, role, content, timestamp } }
+    const message = await res.json();
+    return message; // сервер возвращает { message: { id, role, content, timestamp } }
 }
 
 // export async function sendMessage(question: string): Promise<Message> {

@@ -51,10 +51,7 @@ class DocumentProcessor:
         # Обработка каждой страницы документа
         for doc in document:
             # Нормализация текста страницы
-            doc.page_content = self.normalize_text(doc.page_content)
-
-            print(doc.page_content)
-            
+            doc.page_content = self.normalize_text(doc.page_content)            
             # Сохранение номера страницы в метаданных
             # PyMuPDFLoader сохраняет номер страницы в metadata['page']
             if "page" in doc.metadata:

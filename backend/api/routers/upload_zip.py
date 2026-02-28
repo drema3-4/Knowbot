@@ -10,7 +10,7 @@ from services.vector_store_service import VectorStoreService
 from api.dependencies import get_vector_store_service
 from utils.zip_and_pdf_validators import is_valid_pdf
 from core.config import settings
-from api.routers.upload_pdf import process_pdf
+from api.routers.upload import process_pdf
 
 
 router = APIRouter(prefix="/upload")

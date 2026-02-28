@@ -1,8 +1,12 @@
 from typing import List
 from langchain_core.documents import Document
 import os
+from pathlib import Path
+from fastapi import HTTPException
+import pymupdf
 
 from services.document_processor import DocumentProcessor
+from core.config import settings
 
 class VectorStoreService:
     """Интерфейс для работы с векторной БД."""
@@ -24,16 +28,52 @@ class VectorStoreService:
         """Добавляет чанки документа в векторную БД."""
         self.vector_store.add_documents(chunks)
 
+    def validate_pdf_by_path(
+        self,
+        path_document: str
+    ) -> bool:
+        """Проверяет pdf документ: что с таким именем документа нет, что он не пуст и нужного расширения."""
+        path = Path(path_document)
+
+        if not path.suffix.lower() == ".pdf":
+            print(f"Файл имеет расширение {path.suffix}, ожидалось .pdf")
+            return False
+        
+        target_path = Path(settings.DOCUMENTS_DIRECTORY) / path.name
+        if target_path.exists():
+            print(f"Файл '{path.name}' с таким именем уже есть")
+            return False
+
+        try:
+            if os.path.getsize(path_document) == 0:
+                print(f"Файл '{path.name}' пустой")
+                return False
+            
+            with pymupdf.open(path_document) as doc:
+                if len(doc) == 0:
+                    print(f"Файл '{path.name}' пустой")
+                    return False
+   
+        except:
+            print(f"С файлом '{path.name}' что-то не так")
+            return False
+
+        return True
+
     def add_pdf_document_by_path(
         self,
         path_document: str
     ) -> None:
         """Добавляет pdf документ в векторную БД."""
+        print(f"Началась обработка файла '{path_document}'")
+        
         document, document_sha1 = self.document_processor.document_processing(path_document)
 
         chunks, _ = self.document_processor.chunk_file(document, document_sha1)
 
         self.__add_chunks__(chunks)
+
+        print(f"Обработка файла '{path_document}' завершилась")
 
     def add_pdf_documents_by_path(
         self,

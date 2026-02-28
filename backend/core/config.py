@@ -2,23 +2,35 @@ from typing import Dict, Any, Callable, List
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
-class Vector_Store_Settings(BaseSettings):
-    EMBEDDING_MODEL_SETTINGS: Dict[str, Any] = {
-        "model_name": "all-MiniLM-L6-v2",
-        "model_kwargs": { "device": "cpu" },
-        "encode_kwargs": { "normalize_embeddings": True }
-    }
 
-    RETRIEVER_SETTINGS: Dict[str, Any] = {
-        "search_type": "mmr",
-        "search_kwargs": {
-            "k": 5,
-            "fetch_k": 20,
-            "lambda_mult": 0.5
-        }
+class Vector_Store_Settings(BaseSettings):
+    EMBEDDING_MODEL_NAME: str = "all-MiniLM-L6-v2"
+    EMBEDDING_MODEL_KWARGS: Dict[str, Any] = { "device": "cpu" }
+    EMBEDDING_ENCODE_KWARGS: Dict[str, Any] = { "normalize_embeddings": True }
+
+    RETRIEVER_SEARCH_TYPE: str = "mmr"
+    RETRIEVER_SEARCH_KWARGS: Dict[str, Any] = {
+        "k": 5,
+        "fetch_k": 20,
+        "lambda_mult": 0.5
     }
 
     PERSIST_DIRECTORY: Path = Path(__file__).parent.parent / "chroma_db"
+
+
+    def get_embeddig_model_settings(self) -> Dict[str, Any]:
+        return {
+            "model_name": self.EMBEDDING_MODEL_NAME,
+            "model_kwargs": self.EMBEDDING_MODEL_KWARGS,
+            "encode_kwargs": self.EMBEDDING_ENCODE_KWARGS
+        }
+
+    def get_retriever_settings(self) -> Dict[str, Any]:
+        return {
+            "search_type": self.RETRIEVER_SEARCH_TYPE,
+            "search_kwargs": self.RETRIEVER_SEARCH_KWARGS
+        }
+
 
 class Text_Splitter_Settings(BaseSettings):
     CHUNK_SIZE: int = 1000
@@ -36,13 +48,14 @@ class Text_Splitter_Settings(BaseSettings):
         ""             # Последний резервный вариант
     ]
 
-    def to_langchain_params(self) -> dict:
+    def get_text_splitter_settings(self) -> Dict[str, Any]:
         return {
             "chunk_size": self.CHUNK_SIZE,
             "chunk_overlap": self.CHUNK_OVERLAP,
             "length_function": self.LENGTH_FUNCTION,
             "separators": self.SEPARATORS
         }
+
 
 class LLM_Settings(BaseSettings):
     API_KEY: str
@@ -53,7 +66,7 @@ class LLM_Settings(BaseSettings):
     TIMEOUT: Any = None
     MAX_RETRIES: int = 2
 
-    def to_langchain_params(self) -> dict:
+    def get_llm_settings(self) -> Dict[str, Any]:
         return {
             "api_key": self.API_KEY,
             "model": self.MODEL,
@@ -67,6 +80,7 @@ class LLM_Settings(BaseSettings):
     class Config:
         env_file = Path(__file__).parent.parent / ".env"
 
+
 class Settings(BaseSettings):
     vector_store: Vector_Store_Settings = Vector_Store_Settings()
     text_splitter: Text_Splitter_Settings = Text_Splitter_Settings()
@@ -76,5 +90,6 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = Path(__file__).parent / ".env"
+
 
 settings = Settings()

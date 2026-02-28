@@ -10,27 +10,30 @@ from core.config import settings
 
 class DocumentProcessor:
     def __init__(self):
+        """Загрузка настроек для текстсплиттера."""
         self.text_splitter_settings = settings.text_splitter
 
-    def normalize_document(self, document: str) -> str:
+    def normalize_text(self, text: str) -> str:
+        """Нормализация текста: очистка от лишних пробелов, переносов строк."""
         # Замена переносов строк внутри предложений на пробелы
         # Шаблон ищет последовательность: буква/цифра -> перенос строки -> буква/цифра
-        document = re.sub(r"(?<=[а-яёa-z0-9])\s*\n\s*(?=[а-яёa-z0-9])", " ", document, flags=re.IGNORECASE)
+        text = re.sub(r"(?<=[а-яёa-z0-9])\s*\n\s*(?=[а-яёa-z0-9])", " ", text, flags=re.IGNORECASE)
         
         # Замена нескольких пробельных символов на один пробел
-        document = re.sub(r"\s+", " ", document)
+        text = re.sub(r"\s+", " ", text)
         
         # Удаление пробелов перед знаками препинания
-        document = re.sub(r"\s+([.,!?;:])", r"\1", document)
+        text = re.sub(r"\s+([.,!?;:])", r"\1", text)
         
         # Восстановление переносов строк после завершающих предложение знаков
         # Восстанавливает структуру абзацев
-        document = re.sub(r"([.!?])\s+([А-ЯA-Z])", r"\1\n\n\2", document)
+        text = re.sub(r"([.!?])\s+([А-ЯA-Z])", r"\1\n\n\2", text)
         
-        return document.strip()
+        return text.strip()
     
     # затычка (временное решение)
     def load_pdf_document(self, path_document: str) -> Tuple[List[Document], str]:
+        """Загрузка pdf документа в векторную БД."""
         # Инициализация загрузчика PyMuPDF с отключением извлечения изображений
         loader = PyMuPDFLoader(
             path_document,
@@ -49,7 +52,7 @@ class DocumentProcessor:
         # Обработка каждой страницы документа
         for doc in document:
             # Нормализация текста страницы
-            doc.page_content = self.normalize_document(doc.page_content)
+            doc.page_content = self.normalize_text(doc.page_content)
 
             print(doc.page_content)
             
@@ -76,9 +79,10 @@ class DocumentProcessor:
         return document, document_sha1
 
     def chunk_file(self, document: List[Document], document_sha1: str) -> Tuple[List[Document], str]:
+        """Нарезка текста на чанки для добавления в векторную БД."""
         # Инициализация рекурсивного текстового сплиттера
         text_splitter = RecursiveCharacterTextSplitter(
-            **self.text_splitter_settings.to_langchain_params()
+            **self.text_splitter_settings.get_text_splitter_settings()
         )
         
         # Разбиение документа на чанки

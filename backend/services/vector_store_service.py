@@ -29,7 +29,7 @@ class VectorStoreService:
         path_document: str
     ) -> None:
         """Добавляет pdf документ в векторную БД."""
-        document, document_sha1 = self.document_processor.load_pdf_document(path_document)
+        document, document_sha1 = self.document_processor.document_processing(path_document)
 
         chunks, _ = self.document_processor.chunk_file(document, document_sha1)
 

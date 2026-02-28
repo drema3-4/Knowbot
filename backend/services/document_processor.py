@@ -31,9 +31,8 @@ class DocumentProcessor:
         
         return text.strip()
     
-    # затычка (временное решение)
-    def load_pdf_document(self, path_document: str) -> Tuple[List[Document], str]:
-        """Загрузка pdf документа в векторную БД."""
+    def document_processing(self, path_document: str) -> Tuple[List[Document], str]:
+        """Обработка документа: нормализация, чанкирование, вычисление хэша."""
         # Инициализация загрузчика PyMuPDF с отключением извлечения изображений
         loader = PyMuPDFLoader(
             path_document,

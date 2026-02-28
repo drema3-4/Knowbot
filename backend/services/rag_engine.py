@@ -11,6 +11,7 @@ class RAGEngine:
     def __init__(self,
         retriever
     ):
+        """Загрузка ретривера, настроек, промпта и инициализация цепи LangChain."""
         self.retriever = retriever
         self.llm_settings = settings.llm
         self.prompt = PromptTemplate(
@@ -20,6 +21,7 @@ class RAGEngine:
         self.__init_chain__()    
 
     def __init_chain__(self):
+        """Выстраивание цепи LangChain."""
         # self.llm = ChatGoogleGenerativeAI(**self.llm_settings.get_llm_settings())
         self.llm = ChatOpenAI(**self.llm_settings.get_llm_settings())
         self.chain = RetrievalQA.from_llm(
@@ -29,4 +31,5 @@ class RAGEngine:
         )
 
     def query(self, question):
+        """Выполнение запроса к цепи LangChain"""
         return self.chain.run(question)

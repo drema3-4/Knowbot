@@ -88,6 +88,8 @@ class Settings(BaseSettings):
 
     DOCUMENTS_DIRECTORY: Path = Path(__file__).parent.parent / "documents"
 
+    UPLOAD_TEMP_DIR: Path = Path(__file__).parent.parent / "upload_tmp_dir"
+
     class Config:
         env_file = Path(__file__).parent / ".env"
 

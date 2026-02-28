@@ -2,8 +2,9 @@ from typing import List
 from langchain_core.documents import Document
 import os
 from pathlib import Path
-from fastapi import HTTPException
 import pymupdf
+import tempfile
+import zipfile
 
 from services.document_processor import DocumentProcessor
 from core.config import settings
@@ -59,6 +60,41 @@ class VectorStoreService:
             return False
 
         return True
+    
+    def validate_zip_by_path(
+        self,
+        path_archive: str
+    ) -> tuple[bool, List[str], str]:
+        temp_dir = settings.UPLOAD_TEMP_DIR
+        extract_dir = tempfile.mkdtemp(dir=temp_dir)
+
+        path = Path(path_archive)
+
+        if not path.suffix.lower() == ".zip":
+            print(f"Файл имеет расширение {path.suffix}, ожидалось .zip")
+            return (False, [], extract_dir)
+        
+        try:
+            with zipfile.ZipFile(path_archive, "r") as zf:
+                zf.extractall(extract_dir)
+
+            valid_pdfs = []
+
+            for root, dirs, files in os.walk(extract_dir):
+                for file in files:
+                    full_path_file = os.path.join(root, file)
+
+                    if self.validate_pdf_by_path(full_path_file):
+                        valid_pdfs.append(full_path_file)
+
+        except:
+            print(f"С вашим архивом что-то не так")
+            return (False, [], extract_dir)
+        
+        if len(valid_pdfs) > 0:
+            return (True, valid_pdfs, extract_dir)
+        else:
+            return (False, valid_pdfs, extract_dir)
 
     def add_pdf_document_by_path(
         self,

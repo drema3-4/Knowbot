@@ -13,7 +13,6 @@ from services.rag_engine import RAGEngine
 from services.vector_store_service import VectorStoreService
 from api.routers import query
 from api.routers import upload
-from api.routers import upload_zip
 
 
 @asynccontextmanager
@@ -57,7 +56,6 @@ app = FastAPI(title="RAG MVP", lifespan=lifespan)
 
 app.include_router(query.router, prefix="/api/v1", tags=["Query"])
 app.include_router(upload.router, prefix="/api/v1", tags=["Upload"])
-app.include_router(upload_zip.router, prefix="/api/v1", tags=["Upload"])
 
 app.add_middleware(
     CORSMiddleware,

@@ -11,7 +11,10 @@ from services.document_processor import DocumentProcessor
 from services.vector_store_manager import VectorStoreManager
 from services.rag_engine import RAGEngine
 from services.vector_store_service import VectorStoreService
-from api.routers import query, upload
+from api.routers import query
+from api.routers import upload_pdf
+from api.routers import upload_zip
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -30,7 +33,7 @@ async def lifespan(app: FastAPI):
         retriever=vector_store_manager.get_retriever(),
         document_processor=document_processor
     )
-    
+
     app.state.vector_store_service = vector_store_service
 
     # 3. Автоматически загружаем все PDF из заданной папки
@@ -53,7 +56,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="RAG MVP", lifespan=lifespan)
 
 app.include_router(query.router, prefix="/api/v1", tags=["Query"])
-app.include_router(upload.router, prefix="/api/v1", tags=["Upload"])
+app.include_router(upload_pdf.router, prefix="/api/v1", tags=["Upload"])
+app.include_router(upload_zip.router, prefix="/api/v1", tags=["Upload"])
 
 app.add_middleware(
     CORSMiddleware,

@@ -10,7 +10,7 @@ from core.config import settings
 from api.dependencies import get_vector_store_service
 
 
-router = APIRouter(prefix="/upload", tags=["upload"])
+router = APIRouter(prefix="/upload")
 
 @router.post("/pdf")
 async def upload_pdf(

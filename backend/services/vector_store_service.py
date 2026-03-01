@@ -122,7 +122,8 @@ class VectorStoreService:
             try:
                 path_pdf_document = os.path.join(path_documents, doc_name)
 
-                self.add_pdf_document_by_path(path_pdf_document)
+                if self.validate_pdf_by_path(path_pdf_document):
+                    self.add_pdf_document_by_path(path_pdf_document)
 
             except Exception as e:
                 continue

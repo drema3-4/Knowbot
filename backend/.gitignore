@@ -72,3 +72,4 @@ db.db
 
 /chroma_db
 /documents
+/upload_tmp_dir

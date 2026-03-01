@@ -1,10 +1,8 @@
 from contextlib import asynccontextmanager
 # from fastapi import FastAPI
 from fastapi_offline import FastAPIOffline as FastAPI
-import shutil
-from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
+import os
 
 from core.config import settings
 from services.document_processor import DocumentProcessor
@@ -17,13 +15,13 @@ from api.routers import upload
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 1. Полностью удаляем старую базу данных (чтобы гарантировать свежесть)
-    persist_dir = settings.vector_store.PERSIST_DIRECTORY
-    if persist_dir.exists():
-        shutil.rmtree(persist_dir)
-        print(f"Старая база удалена: {persist_dir}")
+    document_directory = settings.DOCUMENTS_DIRECTORY
+    os.makedirs(document_directory, exist_ok=True)
 
-    # 2. Инициализируем сервисы (менеджер создаст новую пустую базу)
+    upload_temp_directory = settings.UPLOAD_TEMP_DIR
+    os.makedirs(upload_temp_directory, exist_ok=True)
+
+    # 1. Инициализируем сервисы (менеджер создаст новую пустую базу)
     document_processor = DocumentProcessor()
     vector_store_manager = VectorStoreManager()   # внутри создаст пустую Chroma
     rag_engine = RAGEngine(retriever=vector_store_manager.get_retriever())
@@ -69,6 +67,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# if __name__ == "__main__":
-#     uvicorn.run("api.main:app", host="0.0.0.0", port=8000, reload=False)

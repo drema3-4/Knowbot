@@ -82,8 +82,19 @@ class LLM_Settings(BaseSettings):
 
 
 class PostgresSettings(BaseSettings):
-    DATABASE_URL: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str
+    POSTGRES_HOST: str = "db"        # значение по умолчанию (имя сервиса в docker-compose)
+    POSTGRES_PORT: str = "5432"      # стандартный порт
 
+    @property
+    def DATABASE_URL(self) -> str:
+        """Собираем URL для подключения к БД (асинхронный драйвер asyncpg)."""
+        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+
+    class Config:
+        env_file = Path(__file__).parent / ".env"
 
 class Settings(BaseSettings):
     vector_store: Vector_Store_Settings = Vector_Store_Settings()
@@ -97,6 +108,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = Path(__file__).parent / ".env"
+        extra = "ignore"
 
 
 settings = Settings()

@@ -1,7 +1,7 @@
 import type { MessageBubbleProps } from "../types/QueryPageTypes";
 
 
-function MessageBubble({ id, text, sender, className }: MessageBubbleProps) {
+function MessageBubble({ text, sender, className }: MessageBubbleProps) {
     const bubbleClasses = `
         p-3
         rounded-3
@@ -11,7 +11,7 @@ function MessageBubble({ id, text, sender, className }: MessageBubbleProps) {
 
     return (
         <div className={bubbleClasses}>
-            {text}
+            {}{text}
         </div>
     );
 }

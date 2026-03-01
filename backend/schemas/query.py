@@ -1,13 +1,11 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional
 
-class UploadResponse(BaseModel):
-    message: str
-    task_id: Optional[str] = None
-    processed_files: Optional[List[str]] = None
 
 class QueryRequest(BaseModel):
+    user_id: int
     question: str
+    dialog_id: Optional[int] = None  # если не передан, создадим новый диалог
 
 class QueryResponse(BaseModel):
     id: str

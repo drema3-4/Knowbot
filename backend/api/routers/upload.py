@@ -32,3 +32,5 @@ async def upload_zip(
         file,
         vector_store_service
     )
+
+    return {"message": "Архив принят, обработка начата"}

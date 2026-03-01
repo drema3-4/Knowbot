@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, ForeignKey, String, DateTime, Index
 from sqlalchemy.sql import func
+
 from db.base import Base
 
 

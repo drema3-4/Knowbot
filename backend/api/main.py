@@ -9,12 +9,17 @@ from services.document_processor import DocumentProcessor
 from services.vector_store_manager import VectorStoreManager
 from services.rag_engine import RAGEngine
 from services.vector_store_service import VectorStoreService
-from api.routers import query
+from api.routers import query, upload, users, dialogs
 from api.routers import upload
+from db.session import engine
+from db.base import Base
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
     document_directory = settings.DOCUMENTS_DIRECTORY
     os.makedirs(document_directory, exist_ok=True)
 
@@ -54,6 +59,8 @@ app = FastAPI(title="RAG MVP", lifespan=lifespan)
 
 app.include_router(query.router, prefix="/api/v1", tags=["Query"])
 app.include_router(upload.router, prefix="/api/v1", tags=["Upload"])
+app.include_router(users.router, prefix="/api/v1", tags=["Users"])
+app.include_router(dialogs.router, prefix="/api/v1", tags=["Dialogs"])
 
 app.add_middleware(
     CORSMiddleware,

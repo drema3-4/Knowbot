@@ -21,6 +21,8 @@ services:
       context: ./backend
     env_file:
       - ./backend/.env
+    depends_on:
+      - db
     networks:
       - dev
 
@@ -43,6 +45,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data  # том для данных
       - ./init-scripts:/docker-entrypoint-initdb.d  # опционально: скрипты инициализации
+    env_file:
+      - ./.env
     networks:
       - dev
     healthcheck:
@@ -50,6 +54,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
+    
 volumes:
   postgres_data:

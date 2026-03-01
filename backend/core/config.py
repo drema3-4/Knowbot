@@ -81,10 +81,15 @@ class LLM_Settings(BaseSettings):
         env_file = Path(__file__).parent.parent / ".env"
 
 
+class PostgresSettings(BaseSettings):
+    DATABASE_URL: str
+
+
 class Settings(BaseSettings):
     vector_store: Vector_Store_Settings = Vector_Store_Settings()
     text_splitter: Text_Splitter_Settings = Text_Splitter_Settings()
     llm: LLM_Settings = LLM_Settings()
+    postgres: PostgresSettings = PostgresSettings()
 
     DOCUMENTS_DIRECTORY: Path = Path(__file__).parent.parent / "documents"
 

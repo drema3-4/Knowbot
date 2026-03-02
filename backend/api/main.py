@@ -13,10 +13,15 @@ from api.routers import query, upload, users, dialogs
 from api.routers import upload
 from db.session import engine
 from db.base import Base
+from db.models.user import User
+from db.models.dialog import Dialog
+from db.models.message import Message
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    print(settings.postgres.DATABASE_URL)
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

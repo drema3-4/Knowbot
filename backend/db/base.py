@@ -1,5 +1,4 @@
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
 
-from db.models import User, Dialog, Message
+Base = declarative_base()

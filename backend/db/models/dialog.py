@@ -13,5 +13,5 @@ class Dialog(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     __table_args__ = (
-        Index("ix_dialogs_user_id_created_at", user_id, created_at.desc())
+        Index("ix_dialogs_user_id_created_at", user_id, created_at.desc()),
     )

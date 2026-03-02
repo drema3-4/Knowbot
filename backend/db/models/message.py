@@ -16,5 +16,5 @@ class Message(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     __table_args__ = (
-        Index("ix_messages_dialog_id_created_at", message_id, dialog_id, created_at.asc())
+        Index("ix_messages_dialog_id_created_at", message_id, dialog_id, created_at.asc()),
     )

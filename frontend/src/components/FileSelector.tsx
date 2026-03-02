@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import UploadStatus from './UploadStatus';
-import { uploadFile } from '../services/upload';
+import { uploadFile } from '../services/Upload';
 import './FileSelector.css'; // для кастомных стилей
 
 const FileSelector: React.FC = () => {

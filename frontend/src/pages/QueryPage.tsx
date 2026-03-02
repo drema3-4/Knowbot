@@ -39,7 +39,7 @@ function QueryPage() {
     const hasMessages = messages.length > 0;
 
     return (
-        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <div style={{ flex: '1 1 auto', overflow: 'hidden' }}>
                 {hasMessages ? (
                     <AnswerQueryComponent messages={messages} />

@@ -17,7 +17,24 @@ export interface MessageBubbleProps {
 }
 
 export interface Message {
-    id: string;
+    id: string;          // строковый ID для удобства (можно и число)
     text: string;
-    sender: Sender;
+    sender: 'user' | 'bot';
+    // можно добавить timestamp?: string
+}
+
+export interface Dialog {
+    dialog_id: number;
+    user_id: number;
+    created_at: string; // или Date, но пока string
+}
+
+// Для ответа от бэкенда по сообщениям (если нужен маппинг)
+export interface BackendMessage {
+    message_id: number;
+    user_id: number;
+    dialog_id: number;
+    role: string;        // 'user' или 'assistant'
+    content: string;
+    created_at: string;
 }

@@ -25,6 +25,16 @@ class DialogRepository:
         await self.session.refresh(new_dialog)
         return new_dialog
     
+    async def get_dialog_by_id(
+        self,
+        dialog_id: int
+    ) -> Dialog:
+        stmt = select(Dialog).where(
+            Dialog.dialog_id == dialog_id
+        )
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()
+    
     async def get_user_dialogs(
         self,
         user_id: int

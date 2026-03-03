@@ -14,7 +14,10 @@ const QueryPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loadingDialogs, setLoadingDialogs] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
-  const [sending, setSending] = useState(false);
+  const [sending, _] = useState(false);
+  // const [sending, setSending] = useState(false);
+
+  
 
   // Загружаем диалоги при наличии пользователя
   useEffect(() => {

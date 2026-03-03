@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Alert } from 'react-bootstrap';
 import InputQueryComponent from '../components/InputQueryComponent';
 import AnswerQueryComponent from '../components/AnswerQueryComponent';
 import DialogsList from '../components/DialogsList';
 import { useUser } from '../context/UserContext';
 import { fetchUserDialogs, createDialog, fetchDialogMessages } from '../services/DialogApi';
+import { sendMessage } from '../services/QueryPageApi';
 import type { Dialog, Message } from '../types/QueryPageTypes';
 
 const QueryPage: React.FC = () => {
@@ -14,10 +15,8 @@ const QueryPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loadingDialogs, setLoadingDialogs] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
-  const [sending, _] = useState(false);
-  // const [sending, setSending] = useState(false);
-
-  
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Загружаем диалоги при наличии пользователя
   useEffect(() => {
@@ -25,12 +24,13 @@ const QueryPage: React.FC = () => {
 
     const loadDialogs = async () => {
       setLoadingDialogs(true);
+      setError(null);
       try {
         const userDialogs = await fetchUserDialogs(user.user_id);
         setDialogs(userDialogs);
-        // Если есть диалоги, можно выбрать первый? Пока не выбираем, оставляем currentDialogId undefined.
       } catch (error) {
         console.error('Ошибка загрузки диалогов:', error);
+        setError('Не удалось загрузить диалоги');
       } finally {
         setLoadingDialogs(false);
       }
@@ -48,11 +48,13 @@ const QueryPage: React.FC = () => {
 
     const loadMessages = async () => {
       setLoadingMessages(true);
+      setError(null);
       try {
         const dialogMessages = await fetchDialogMessages(currentDialogId, user.user_id);
         setMessages(dialogMessages);
       } catch (error) {
         console.error('Ошибка загрузки сообщений:', error);
+        setError('Не удалось загрузить сообщения');
         setMessages([]);
       } finally {
         setLoadingMessages(false);
@@ -68,7 +70,7 @@ const QueryPage: React.FC = () => {
 
   const handleCreateDialog = async () => {
     if (!user) return;
-
+    setError(null);
     try {
       const newDialog = await createDialog(user.user_id);
       setDialogs(prev => [newDialog, ...prev]); // добавляем в начало
@@ -76,32 +78,68 @@ const QueryPage: React.FC = () => {
       setMessages([]); // очищаем сообщения (новый диалог пуст)
     } catch (error) {
       console.error('Ошибка создания диалога:', error);
+      setError('Не удалось создать диалог');
     }
   };
 
   const handleSend = async (question: string) => {
-    // Пока заглушка – просто логируем и добавляем сообщение пользователя (без ответа)
-    // Позже здесь будет вызов /api/v1/query
-    console.log('Отправка сообщения:', question);
+    if (!user) return;
 
-    // Добавляем сообщение пользователя (временное, без ответа)
+    // Если нет текущего диалога, сначала создаём его
+    let targetDialogId = currentDialogId;
+    if (!targetDialogId) {
+      setSending(true);
+      try {
+        const newDialog = await createDialog(user.user_id);
+        setDialogs(prev => [newDialog, ...prev]);
+        targetDialogId = newDialog.dialog_id;
+        setCurrentDialogId(targetDialogId);
+      } catch (error) {
+        console.error('Ошибка создания диалога перед отправкой:', error);
+        setError('Не удалось создать диалог');
+        setSending(false);
+        return;
+      }
+    }
+
+    // Добавляем временное сообщение пользователя
     const tempUserMessage: Message = {
-      id: Date.now().toString(),
+      id: 'temp-' + Date.now().toString(),
       text: question,
       sender: 'user',
     };
     setMessages(prev => [...prev, tempUserMessage]);
+    setSending(true);
+    setError(null);
 
-    // Здесь пока нет ответа от бота – нужно будет доработать на следующем этапе
-    // Если нет текущего диалога, нужно сначала создать его
-    if (!currentDialogId) {
-      // TODO: создать диалог и затем отправить сообщение
-      console.warn('Нет выбранного диалога. Сначала создайте или выберите диалог.');
+    try {
+      // Отправляем запрос к /api/v1/query
+      // const botMessage = await sendMessage(question, user.user_id, targetDialogId);
+      await sendMessage(question, user.user_id, targetDialogId);
+
+      // Заменяем временное сообщение пользователя на постоянное?
+      // Но на бэкенде оно уже сохранилось, поэтому мы можем просто добавить ответ бота
+      // и при желании обновить список сообщений, но у нас уже есть пользовательское сообщение.
+      // Лучше перезагрузить сообщения диалога, чтобы получить актуальную историю.
+      // Однако для простоты добавим ответ бота и удалим временное сообщение? Нет, лучше перезагрузить.
+
+      // Перезагружаем сообщения текущего диалога, чтобы получить обновлённую историю
+      if (targetDialogId) {
+        const updatedMessages = await fetchDialogMessages(targetDialogId, user.user_id);
+        setMessages(updatedMessages);
+      }
+    } catch (error) {
+      console.error('Ошибка отправки сообщения:', error);
+      setError('Не удалось отправить сообщение');
+      // Удаляем временное сообщение пользователя (так как оно не сохранилось)
+      setMessages(prev => prev.filter(msg => msg.id !== tempUserMessage.id));
+    } finally {
+      setSending(false);
     }
   };
 
-  // Определяем, можно ли отправлять сообщения: есть пользователь и выбран диалог
-  const canSend = !!user && !!currentDialogId && !sending;
+  // Определяем, можно ли отправлять сообщения: есть пользователь и не отправляется сейчас
+  const canSend = !!user && !sending;
 
   return (
     <Container fluid style={{ height: '100%', padding: 0 }}>
@@ -119,6 +157,11 @@ const QueryPage: React.FC = () => {
 
         {/* Правая колонка – чат */}
         <Col xs={12} md={8} lg={9} style={{ padding: 0, height: '100%', display: 'flex', flexDirection: 'column' }}>
+          {error && (
+            <Alert variant="danger" dismissible onClose={() => setError(null)} className="m-2">
+              {error}
+            </Alert>
+          )}
           {loadingMessages ? (
             <div className="d-flex justify-content-center align-items-center" style={{ flex: 1 }}>
               Загрузка сообщений...
